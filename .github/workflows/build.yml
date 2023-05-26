@@ -100,7 +100,7 @@ jobs:
       - name: Build ${{matrix.configuration}} ${{matrix.arch}} binaries
         run: |
           pushd build
-          ../tools/mold -run make config=${{matrix.config}}_${{matrix.arch}} -j$(nproc)
+          make config=${{matrix.config}}_${{matrix.arch}} -j$(nproc)
 
       - name: Upload ${{matrix.configuration}} ${{matrix.arch}} binaries
         uses: actions/upload-artifact@v3.1.2
