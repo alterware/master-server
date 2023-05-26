@@ -134,9 +134,9 @@ namespace utils::compression
 			}
 		}
 
-		void archive::add(std::string filename, std::string data)
+		void archive::add(const std::string& filename, const std::string& data)
 		{
-			this->files_[std::move(filename)] = std::move(data);
+			this->files_[filename] = data;
 		}
 
 		bool archive::write(const std::string& filename, const std::string& comment)
