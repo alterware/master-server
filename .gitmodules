@@ -19,4 +19,4 @@
 [submodule "deps/curl"]
 	path = deps/curl
 	url = https://github.com/curl/curl.git
-	branch = curl-8_0_1
+	branch = curl-8_1_1
