@@ -31,10 +31,12 @@
 #endif
 
 #include <cassert>
+#include <cctype>
 #include <csignal>
 #include <cstdarg>
 #include <cstdint>
 #include <cstdio>
+#include <cstring>
 #include <ctime>
 
 #include <atomic>

@@ -58,11 +58,11 @@ filter {}
 
 filter {"language:C++", "toolset:not msc*"}
 	buildoptions {
-		"-std=c++17"
+		"-std=c++20"
 	}
 filter "toolset:msc*"
 	buildoptions {
-		"/std:c++17"
+		"/std:c++20"
 	}
 filter {}
 
