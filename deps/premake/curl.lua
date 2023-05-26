@@ -6,7 +6,7 @@ function curl.import()
 	links { "curl" }
 	
 	filter "toolset:msc*"
-	links { "Crypt32.lib" }
+		links { "Crypt32.lib" }
 	filter {}
 	
 	curl.includes()
