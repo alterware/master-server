@@ -46,7 +46,7 @@ jobs:
           version: "5.0.0-beta2"
 
       - name: Generate project files
-        run: cmd /C call generate.bat
+        run: premake5 vs2022
 
       - name: Set up problem matching
         uses: ammaraskar/msvc-problem-matcher@master
@@ -102,7 +102,7 @@ jobs:
           version: "5.0.0-beta2"
 
       - name: Generate project files
-        run: ./generate.sh
+        run: premake5 gmake2
 
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
@@ -155,7 +155,7 @@ jobs:
           version: "5.0.0-beta2"
 
       - name: Generate project files
-        run: ./generate.sh
+        run: premake5 gmake2
 
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
