@@ -40,8 +40,13 @@ jobs:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.3.1
 
+      - name: Install Premake5
+        uses: abel0b/setup-premake@v2.2
+        with:
+          version: "5.0.0-beta2"
+
       - name: Generate project files
-        run: cmd /C call generate.bat
+        run: premake5 vs2022
 
       - name: Set up problem matching
         uses: ammaraskar/msvc-problem-matcher@master
@@ -91,8 +96,13 @@ jobs:
       - name: Install Mold
         uses: rui314/setup-mold@staging
 
+      - name: Install Premake5
+        uses: abel0b/setup-premake@v2.2
+        with:
+          version: "5.0.0-beta2"
+
       - name: Generate project files
-        run: ./generate.sh
+        run: premake5 gmake2
 
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
@@ -139,8 +149,13 @@ jobs:
           # NOTE - If LFS ever starts getting used during builds, switch this to true!
           lfs: false
 
+      - name: Install Premake5
+        uses: abel0b/setup-premake@v2.2
+        with:
+          version: "5.0.0-beta2"
+
       - name: Generate project files
-        run: ./generate.sh
+        run: premake5 gmake2
 
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
