@@ -83,65 +83,6 @@ namespace utils::string
 		return result;
 	}
 
-	void strip(const char* in, char* out, int max)
-	{
-		if (!in || !out) return;
-
-		max--;
-		auto current = 0;
-		while (*in != 0 && current < max)
-		{
-			const auto color_index = (*(in + 1) - 48) >= 0xC ? 7 : (*(in + 1) - 48);
-
-			if (*in == '^' && (color_index != 7 || *(in + 1) == '7'))
-			{
-				++in;
-			}
-			else
-			{
-				*out = *in;
-				++out;
-				++current;
-			}
-
-			++in;
-		}
-		*out = '\0';
-	}
-
-#ifdef _WIN32
-#pragma warning(push)
-#pragma warning(disable: 4100)
-#endif
-	std::string convert(const std::wstring& wstr)
-	{
-		std::string result;
-		result.reserve(wstr.size());
-
-		for (const auto& chr : wstr)
-		{
-			result.push_back(static_cast<char>(chr));
-		}
-
-		return result;
-	}
-
-	std::wstring convert(const std::string& str)
-	{
-		std::wstring result;
-		result.reserve(str.size());
-
-		for (const auto& chr : str)
-		{
-			result.push_back(static_cast<wchar_t>(chr));
-		}
-
-		return result;
-	}
-#ifdef _WIN32
-#pragma warning(pop)
-#endif
-
 	std::string replace(std::string str, const std::string& from, const std::string& to)
 	{
 		if (from.empty())
