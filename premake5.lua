@@ -41,7 +41,7 @@ configurations {"Debug", "Release"}
 if os.istarget("darwin") then
 	platforms {"x64", "arm64"}
 else
-	platforms {"x86", "x64"}
+	platforms {"x86", "x64", "arm64"}
 end
 
 filter "platforms:x86"

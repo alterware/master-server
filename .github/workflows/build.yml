@@ -30,7 +30,7 @@ jobs:
             platform: x64
     steps:
       - name: Check out files
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3.5.3
         with:
           submodules: true
           fetch-depth: 0
@@ -73,6 +73,7 @@ jobs:
           - Release
         arch:
           - x64
+          - ARM64
         include:
           - configuration: Debug
             config: debug
@@ -80,7 +81,7 @@ jobs:
             config: release
     steps:
       - name: Check out files
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3.5.3
         with:
           submodules: true
           fetch-depth: 0
@@ -92,6 +93,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install libcurl4-gnutls-dev
+
+      - name: Install dependencies (arm64)
+        if: matrix.arch == 'ARM64'
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install crossbuild-essential-arm64 libcurl4-gnutls-dev:arm64
 
       - name: Install Mold
         uses: rui314/setup-mold@staging
@@ -111,6 +118,10 @@ jobs:
         run: |
           pushd build
           make config=${{matrix.config}}_${{matrix.arch}} -j$(nproc)
+        if: matrix.arch == 'ARM64'  
+        env:
+         CC: aarch64-linux-gnu-gcc
+         CXX: aarch64-linux-gnu-g++
 
       - name: Upload ${{matrix.configuration}} ${{matrix.arch}} binaries
         uses: actions/upload-artifact@v3.1.2
