@@ -87,12 +87,6 @@ jobs:
           # NOTE - If LFS ever starts getting used during builds, switch this to true!
           lfs: false
 
-      - name: Install dependencies (x64)
-        if: matrix.arch == 'x64'
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install libcurl4-gnutls-dev
-
       - name: Install Mold
         uses: rui314/setup-mold@staging
 

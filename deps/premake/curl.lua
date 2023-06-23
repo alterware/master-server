@@ -4,16 +4,15 @@ curl = {
 
 function curl.import()
 	links { "curl" }
-	
+
 	filter "toolset:msc*"
 		links { "Crypt32.lib" }
 	filter {}
-	
+
 	curl.includes()
 end
 
 function curl.includes()
-filter "toolset:msc*"
 	includedirs {
 		path.join(curl.source, "include"),
 	}
@@ -23,19 +22,14 @@ filter "toolset:msc*"
 		"CURL_STATICLIB",
 		"CURL_DISABLE_LDAP",
 	}
-filter {}
 end
 
 function curl.project()
-	if not os.istarget("windows") then
-		return
-	end
-
 	project "curl"
 		language "C"
 
 		curl.includes()
-		
+
 		includedirs {
 			path.join(curl.source, "lib"),
 		}
@@ -44,11 +38,11 @@ function curl.project()
 			path.join(curl.source, "lib/**.c"),
 			path.join(curl.source, "lib/**.h"),
 		}
-		
+
 		defines {
 			"BUILDING_LIBCURL",
 		}
-		
+
 		filter "toolset:msc*"
 
 		defines {
@@ -56,13 +50,14 @@ function curl.project()
 			"USE_WINDOWS_SSPI",
 			"USE_THREADS_WIN32",
 		}
-		
+		filter {}
+
 		filter "toolset:not msc*"
-		
-		defines {
-			"USE_GNUTLS",
-			"USE_THREADS_POSIX",
-		}
+
+			defines {
+				"USE_GNUTLS",
+				"USE_THREADS_POSIX",
+			}
 
 		filter {}
 
