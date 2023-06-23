@@ -18,7 +18,6 @@ function curl.includes()
 	}
 
 	defines {
-		"CURL_STRICTER",
 		"CURL_STATICLIB",
 		"CURL_DISABLE_LDAP",
 	}
@@ -44,16 +43,14 @@ function curl.project()
 		}
 
 		filter "toolset:msc*"
-
-		defines {
-			"USE_SCHANNEL",
-			"USE_WINDOWS_SSPI",
-			"USE_THREADS_WIN32",
-		}
+			defines {
+				"USE_SCHANNEL",
+				"USE_WINDOWS_SSPI",
+				"USE_THREADS_WIN32",
+			}
 		filter {}
 
 		filter "toolset:not msc*"
-
 			defines {
 				"USE_GNUTLS",
 				"USE_THREADS_POSIX",
