@@ -73,6 +73,7 @@ jobs:
           - Release
         arch:
           - x64
+          - arm64
         include:
           - configuration: Debug
             config: debug
@@ -93,6 +94,23 @@ jobs:
           sudo apt-get update
           sudo apt-get -y install libcurl4-gnutls-dev
 
+      - name: Install cross build tools dependencies (arm64)
+        if: matrix.arch == 'arm64'
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install crossbuild-essential-arm64
+
+      - name: Install dependencies (arm64)
+        if: matrix.arch == 'arm64'
+        run: |
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ jammy main multiverse universe" | sudo tee /etc/apt/sources.list
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ jammy-security main multiverse universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ jammy-backports main multiverse universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ jammy-updates main multiverse universe" | sudo tee -a /etc/apt/sources.list
+          sudo dpkg --add-architecture arm64
+          sudo apt-get update
+          sudo apt-get -y install libcurl4-gnutls-dev:arm64
+
       - name: Install Mold
         uses: rui314/setup-mold@staging
 
@@ -106,6 +124,16 @@ jobs:
 
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
+
+      - name: Set up CC environment variable
+        if: matrix.arch == 'arm64'
+        run: |
+          echo "CC=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
+
+      - name: Set up CXX environment variable
+        if: matrix.arch == 'arm64'
+        run: |
+          echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
 
       - name: Build ${{matrix.configuration}} ${{matrix.arch}} binaries
         run: |
