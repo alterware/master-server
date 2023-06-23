@@ -30,7 +30,7 @@ jobs:
             platform: x64
     steps:
       - name: Check out files
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3.5.3
         with:
           submodules: true
           fetch-depth: 0
@@ -80,7 +80,7 @@ jobs:
             config: release
     steps:
       - name: Check out files
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3.5.3
         with:
           submodules: true
           fetch-depth: 0
@@ -130,7 +130,7 @@ jobs:
           - Release
         arch:
           - x64
-          - ARM64
+          - arm64
         include:
           - configuration: Debug
             config: debug
@@ -138,7 +138,7 @@ jobs:
             config: release
           - arch: x64
             platform: x64
-          - arch: ARM64
+          - arch: arm64
             platform: arm64
     steps:
       - name: Check out files

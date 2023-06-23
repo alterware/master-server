@@ -45,17 +45,17 @@ function libtomcrypt.project()
 			"_CRT_SECURE_NO_WARNINGS",
 			"LTC_SOURCE",
 			"_LIB",
-			"USE_LTM"
+			"USE_LTM",
 		}
 
 		removedefines {
 			"_DLL",
-			"_USRDLL"
+			"_USRDLL",
 		}
 
-		linkoptions {
-			"-IGNORE:4221"
-		}
+		if os.istarget("darwin") then
+			buildoptions "-march=native"
+		end
 
 		warnings "Off"
 		kind "StaticLib"
