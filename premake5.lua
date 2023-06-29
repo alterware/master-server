@@ -39,7 +39,7 @@ targetdir "%{wks.location}/bin/%{cfg.platform}/%{cfg.buildcfg}"
 configurations {"Debug", "Release"}
 
 if os.istarget("darwin") then
-	platforms {"x64"}
+	platforms {"x64", "arm64"}
 else
 	platforms {"x86", "x64", "arm64"}
 end
@@ -76,10 +76,24 @@ editandcontinue "Off"
 warnings "Extra"
 characterset "ASCII"
 
-if os.istarget("linux") or os.istarget("darwin") then
+filter { "system:linux", "system:macosx" }
 	buildoptions "-pthread"
 	linkoptions "-pthread"
+filter {}
+
+if os.istarget("linux") then
+	filter { "platforms:arm64" }
+		buildoptions "--target=arm64-linux-gnu"
+		linkoptions "--target=arm64-linux-gnu"
+	filter {}
+
+	linkoptions "-fuse-ld=lld"
 end
+
+filter { "system:macosx", "platforms:arm64" }
+	buildoptions "-arch arm64"
+	linkoptions "-arch arm64"
+filter {}
 
 if _OPTIONS["dev-build"] then
 	defines {"DEV_BUILD"}
@@ -94,7 +108,7 @@ flags {"NoIncrementalLink", "NoMinimalRebuild", "MultiProcessorCompile", "No64Bi
 filter "configurations:Release"
 	optimize "Speed"
 	defines {"NDEBUG"}
-	flags {"FatalCompileWarnings"}
+	flags "FatalCompileWarnings"
 filter {}
 
 filter "configurations:Debug"
