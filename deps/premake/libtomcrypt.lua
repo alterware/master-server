@@ -54,7 +54,13 @@ function libtomcrypt.project()
 		}
 
 		if os.istarget("darwin") then
-			buildoptions "-march=native"
+			filter "platforms:x64"
+				buildoptions "-march=native"
+			filter {}
+
+			filter "platforms:arm64"
+				buildoptions "-mcpu=apple-m1"
+			filter {}
 		end
 
 		warnings "Off"
