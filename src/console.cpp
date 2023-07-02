@@ -66,7 +66,7 @@ namespace console
 			static thread_local char buffer[0x1000];
 
 #ifdef _WIN32
-			const int count = _vsnprintf_s(buffer, sizeof(buffer), sizeof(buffer), message, *ap);
+			const int count = vsnprintf_s(buffer, _TRUNCATE, message, *ap);
 #else
 			const int count = vsnprintf(buffer, sizeof(buffer), message, *ap);
 #endif
