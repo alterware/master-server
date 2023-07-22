@@ -38,6 +38,9 @@ targetdir "%{wks.location}/bin/%{cfg.platform}/%{cfg.buildcfg}"
 
 configurations {"Debug", "Release"}
 
+language "C++"
+cppdialect "C++20"
+
 if os.istarget("darwin") then
 	platforms {"x64", "arm64"}
 else
@@ -54,20 +57,6 @@ filter {}
 
 filter "platforms:arm64"
 architecture "ARM64"
-filter {}
-
-filter {"language:C++", "toolset:not msc*"}
-	buildoptions {
-		"-std=c++20"
-	}
-filter "toolset:msc*"
-	buildoptions {
-		"/std:c++20"
-	}
-filter {}
-
-filter {"system:windows"}
-	systemversion "latest"
 filter {}
 
 symbols "On"
@@ -107,7 +96,7 @@ flags {"NoIncrementalLink", "NoMinimalRebuild", "MultiProcessorCompile", "No64Bi
 
 filter "configurations:Release"
 	optimize "Speed"
-	defines {"NDEBUG"}
+	defines "NDEBUG"
 	flags "FatalCompileWarnings"
 filter {}
 
@@ -136,9 +125,8 @@ filter { "system:windows", "toolset:not msc*" }
 		"%{_MAIN_SCRIPT_DIR}/src"
 	}
 filter { "system:windows", "toolset:msc*" }
-	linkoptions {"/IGNORE:4254", "/SAFESEH:NO", "/LARGEADDRESSAWARE", "/PDBCompress"}
 	resincludedirs {
-		"$(ProjectDir)src" -- fix for VS IDE
+		"$(ProjectDir)src"
 	}
 filter {}
 
