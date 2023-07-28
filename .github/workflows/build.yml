@@ -40,7 +40,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.3.1
 
       - name: Install Premake5
-        uses: abel0b/setup-premake@v2.2
+        uses: abel0b/setup-premake@v2.3
         with:
           version: "5.0.0-beta2"
 
@@ -108,7 +108,7 @@ jobs:
           sudo apt-get install libcurl4-gnutls-dev:arm64 -y
 
       - name: Install Premake5
-        uses: abel0b/setup-premake@v2.2
+        uses: abel0b/setup-premake@v2.3
         with:
           version: "5.0.0-beta2"
 
@@ -161,7 +161,7 @@ jobs:
           lfs: false
 
       - name: Install Premake5
-        uses: abel0b/setup-premake@v2.2
+        uses: abel0b/setup-premake@v2.3
         with:
           version: "5.0.0-beta2"
 
