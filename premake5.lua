@@ -72,6 +72,9 @@ filter {}
 
 if os.istarget("linux") then
 	filter { "platforms:arm64" }
+		-- use libc++ (please install LLVM)
+		buildoptions "-stdlib=libc++"
+
 		buildoptions "--target=arm64-linux-gnu"
 		linkoptions "--target=arm64-linux-gnu"
 	filter {}
