@@ -71,11 +71,15 @@ filter { "system:linux", "system:macosx" }
 filter {}
 
 if os.istarget("linux") then
-	filter { "platforms:arm64" }
+	filter { "toolset:clang", "platforms:arm64" }
+		-- use libc++
+		buildoptions "-stdlib=libc++"
+
 		buildoptions "--target=arm64-linux-gnu"
 		linkoptions "--target=arm64-linux-gnu"
 	filter {}
 
+	-- always try to use lld. LD or Gold will not work
 	linkoptions "-fuse-ld=lld"
 end
 
@@ -95,7 +99,7 @@ end
 flags {"NoIncrementalLink", "NoMinimalRebuild", "MultiProcessorCompile", "No64BitChecks"}
 
 filter "configurations:Release"
-	optimize "Speed"
+	optimize "Size"
 	defines "NDEBUG"
 	flags "FatalCompileWarnings"
 filter {}
@@ -120,10 +124,14 @@ filter "system:windows"
 	files {
 		"./src/**.rc",
 	}
+filter {}
+
 filter { "system:windows", "toolset:not msc*" }
 	resincludedirs {
 		"%{_MAIN_SCRIPT_DIR}/src"
 	}
+filter {}
+
 filter { "system:windows", "toolset:msc*" }
 	resincludedirs {
 		"$(ProjectDir)src"
