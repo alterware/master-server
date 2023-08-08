@@ -76,6 +76,7 @@ if os.istarget("linux") then
 		linkoptions "--target=arm64-linux-gnu"
 	filter {}
 
+	-- always try to use lld. LD or Gold will not work
 	linkoptions "-fuse-ld=lld"
 end
 
@@ -95,7 +96,7 @@ end
 flags {"NoIncrementalLink", "NoMinimalRebuild", "MultiProcessorCompile", "No64BitChecks"}
 
 filter "configurations:Release"
-	optimize "Speed"
+	optimize "Size"
 	defines "NDEBUG"
 	flags "FatalCompileWarnings"
 filter {}
@@ -120,10 +121,14 @@ filter "system:windows"
 	files {
 		"./src/**.rc",
 	}
+filter {}
+
 filter { "system:windows", "toolset:not msc*" }
 	resincludedirs {
 		"%{_MAIN_SCRIPT_DIR}/src"
 	}
+filter {}
+
 filter { "system:windows", "toolset:msc*" }
 	resincludedirs {
 		"$(ProjectDir)src"
