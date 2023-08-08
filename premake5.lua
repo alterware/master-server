@@ -72,9 +72,6 @@ filter {}
 
 if os.istarget("linux") then
 	filter { "toolset:clang", "platforms:arm64" }
-		-- use libc++
-		buildoptions "-stdlib=libc++"
-
 		buildoptions "--target=arm64-linux-gnu"
 		linkoptions "--target=arm64-linux-gnu"
 	filter {}
