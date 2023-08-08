@@ -57,7 +57,7 @@ function curl.project()
 				"USE_THREADS_WIN32",
 			}
 
-		filet {}
+		filter {}
 		
 		filter "toolset:not msc*"
 		
