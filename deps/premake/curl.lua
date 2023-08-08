@@ -51,18 +51,20 @@ function curl.project()
 		
 		filter "toolset:msc*"
 
-		defines {
-			"USE_SCHANNEL",
-			"USE_WINDOWS_SSPI",
-			"USE_THREADS_WIN32",
-		}
+			defines {
+				"USE_SCHANNEL",
+				"USE_WINDOWS_SSPI",
+				"USE_THREADS_WIN32",
+			}
+
+		filet {}
 		
 		filter "toolset:not msc*"
 		
-		defines {
-			"USE_GNUTLS",
-			"USE_THREADS_POSIX",
-		}
+			defines {
+				"USE_GNUTLS",
+				"USE_THREADS_POSIX",
+			}
 
 		filter {}
 
