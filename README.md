@@ -2,3 +2,14 @@
 
 
 # AlterWare: Master Server
+This is the master server our clients use. It is based on the DP Master Server (ID Tech) protocol
+
+## Build
+- Install [*premake5*](https://premake.github.io) and add it to your system PATH
+- Clone this repository
+- Update the submodules using ``git submodule update --init --recursive``
+- Run Premake with either of these two options ``premake5 vs2022`` (Windows) or ``premake5 gmake2`` (Linux/macOS)
+
+  **IMPORTANT**
+  For Unix systems, you must use Clang to compile this project. You will also be required to install the LLVM C++ Standard library to run this program.
+  If you need to use another compiler, like GCC, you will be required to use the [Mold](https://github.com/rui314/mold) linker. Additionally, you must tweak the Premake5.lua script as it's hardcoded to use Clang.
