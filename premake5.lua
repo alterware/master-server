@@ -71,16 +71,18 @@ filter { "system:linux", "system:macosx" }
 filter {}
 
 if os.istarget("linux") then
-	filter { "platforms:arm64" }
+	filter { "toolset:clang*", "platforms:arm64" }
 		buildoptions "--target=arm64-linux-gnu"
 		linkoptions "--target=arm64-linux-gnu"
 	filter {}
 
-	buildoptions "-stdlib=libc++"
-	linkoptions "-stdlib=libc++"
+	filter { "toolset:clang*" }
+		buildoptions "-stdlib=libc++"
+		linkoptions "-stdlib=libc++"
 
-	-- always try to use lld. LD or Gold will not work
-	linkoptions "-fuse-ld=lld"
+		-- always try to use lld. LD or Gold will not work
+		linkoptions "-fuse-ld=lld"
+	filter {}
 end
 
 filter { "system:macosx", "platforms:arm64" }

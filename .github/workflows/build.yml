@@ -99,7 +99,7 @@ jobs:
           version: "5.0.0-beta2"
 
       - name: Generate project files
-        run: premake5 gmake2
+        run: premake5 --cc=clang gmake2
 
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
