@@ -12,4 +12,5 @@ This is the master server our clients use. It is based on the DP Master Server (
 
 **IMPORTANT**
 For Unix systems, you must use Clang to compile this project. You will also be required to install the LLVM C++ Standard library to run this program.
-If you need to use another compiler, like GCC, you must use the [Mold](https://github.com/rui314/mold) linker. Additionally, you must tweak the Premake5.lua script as it is hardcoded to use Clang.
+If you need to use another compiler, like GCC, you must use the [Mold](https://github.com/rui314/mold) linker. Additionally, you may have to tweak the Premake5.lua script.
+I only support a few platforms, for more details see [build.yml](https://github.com/alterware/master-server/blob/master/.github/workflows/build.yml)
