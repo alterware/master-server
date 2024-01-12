@@ -36,7 +36,7 @@ location "./build"
 objdir "%{wks.location}/obj"
 targetdir "%{wks.location}/bin/%{cfg.platform}/%{cfg.buildcfg}"
 
-configurations {"Debug", "Release"}
+configurations {"debug", "release"}
 
 language "C++"
 cppdialect "C++20"

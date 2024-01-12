@@ -21,8 +21,8 @@ jobs:
       fail-fast: false
       matrix:
         configuration:
-          - Debug
-          - Release
+          - debug
+          - release
         arch:
           - x64
         include:
@@ -30,7 +30,7 @@ jobs:
             platform: x64
     steps:
       - name: Check out files
-        uses: actions/checkout@v4
+        uses: actions/checkout@main
         with:
           submodules: true
           fetch-depth: 0
@@ -38,7 +38,7 @@ jobs:
           lfs: false
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.3.1
+        uses: microsoft/setup-msbuild@main
 
       - name: Install Premake5
         uses: abel0b/setup-premake@v2.3
@@ -51,13 +51,13 @@ jobs:
       - name: Set up problem matching
         uses: ammaraskar/msvc-problem-matcher@master
 
-      - name: Build ${{matrix.configuration}} ${{matrix.arch}} binaries
+      - name: Build ${{matrix.arch}} ${{matrix.configuration}} binaries
         run: msbuild /m /v:minimal /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} build/alterware-master.sln
 
-      - name: Upload ${{matrix.configuration}} ${{matrix.arch}} binaries
-        uses: actions/upload-artifact@v3.1.3
+      - name: Upload ${{matrix.arch}} ${{matrix.configuration}} binaries
+        uses: actions/upload-artifact@main
         with:
-          name: Windows ${{matrix.configuration}} ${{matrix.arch}} binaries
+          name: windows-${{matrix.arch}}-${{matrix.configuration}}
           path: |
             build/bin/${{matrix.arch}}/${{matrix.configuration}}/alterware-master.exe
             build/bin/${{matrix.arch}}/${{matrix.configuration}}/alterware-master.pdb
@@ -69,18 +69,13 @@ jobs:
       fail-fast: false
       matrix:
         configuration:
-          - Debug
-          - Release
+          - debug
+          - release
         arch:
           - x64
-        include:
-          - configuration: Debug
-            config: debug
-          - configuration: Release
-            config: release
     steps:
       - name: Check out files
-        uses: actions/checkout@v4
+        uses: actions/checkout@main
         with:
           submodules: true
           fetch-depth: 0
@@ -104,18 +99,18 @@ jobs:
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
 
-      - name: Build ${{matrix.configuration}} ${{matrix.arch}} binaries
+      - name: Build ${{matrix.arch}} ${{matrix.configuration}} binaries
         run: |
           pushd build
-          make config=${{matrix.config}}_${{matrix.arch}} -j$(nproc)
+          make config=${{matrix.configuration}}_${{matrix.arch}} -j$(nproc)
         env:
           CC: clang
           CXX: clang++
 
-      - name: Upload ${{matrix.configuration}} ${{matrix.arch}} binaries
-        uses: actions/upload-artifact@v3.1.3
+      - name: Upload ${{matrix.arch}} ${{matrix.configuration}} binaries
+        uses: actions/upload-artifact@main
         with:
-          name: Linux ${{matrix.configuration}} ${{matrix.arch}} binaries
+          name: linux-${{matrix.arch}}-${{matrix.configuration}}
           path: |
             build/bin/${{matrix.arch}}/${{matrix.configuration}}/alterware-master
 
@@ -126,23 +121,14 @@ jobs:
       fail-fast: false
       matrix:
         configuration:
-          - Debug
-          - Release
+          - debug
+          - release
         arch:
           - x64
           - arm64
-        include:
-          - configuration: Debug
-            config: debug
-          - configuration: Release
-            config: release
-          - arch: x64
-            platform: x64
-          - arch: arm64
-            platform: arm64
     steps:
       - name: Check out files
-        uses: actions/checkout@v4
+        uses: actions/checkout@main
         with:
           submodules: true
           fetch-depth: 0
@@ -160,14 +146,14 @@ jobs:
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
 
-      - name: Build ${{matrix.configuration}} ${{matrix.arch}} binaries
+      - name: Build ${{matrix.arch}} ${{matrix.configuration}} binaries
         run: |
           pushd build
-          make config=${{matrix.config}}_${{matrix.arch}} -j$(sysctl -n hw.logicalcpu)
+          make config=${{matrix.configuration}}_${{matrix.arch}} -j$(sysctl -n hw.logicalcpu)
 
-      - name: Upload ${{matrix.configuration}} ${{matrix.arch}} binaries
-        uses: actions/upload-artifact@v3.1.3
+      - name: Upload ${{matrix.arch}} ${{matrix.configuration}} binaries
+        uses: actions/upload-artifact@main
         with:
-          name: macOS ${{matrix.configuration}} ${{matrix.arch}} binaries
+          name: macos-${{matrix.arch}}-${{matrix.configuration}}
           path: |
             build/bin/${{matrix.arch}}/${{matrix.configuration}}/alterware-master
