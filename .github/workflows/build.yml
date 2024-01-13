@@ -13,6 +13,9 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  PREMAKE_VERSION: "5.0.0-beta2"
+
 jobs:
   build-win:
     name: Build Windows
@@ -43,7 +46,7 @@ jobs:
       - name: Install Premake5
         uses: abel0b/setup-premake@v2.3
         with:
-          version: "5.0.0-beta2"
+          version: ${{ env.PREMAKE_VERSION }}
 
       - name: Generate project files
         run: premake5 vs2022
@@ -91,7 +94,7 @@ jobs:
       - name: Install Premake5
         uses: abel0b/setup-premake@v2.3
         with:
-          version: "5.0.0-beta2"
+          version: ${{ env.PREMAKE_VERSION }}
 
       - name: Generate project files
         run: premake5 --cc=clang gmake2
@@ -138,7 +141,7 @@ jobs:
       - name: Install Premake5
         uses: abel0b/setup-premake@v2.3
         with:
-          version: "5.0.0-beta2"
+          version: ${{ env.PREMAKE_VERSION }}
 
       - name: Generate project files
         run: premake5 gmake2
