@@ -76,6 +76,7 @@ jobs:
           - release
         arch:
           - x64
+          - arm64
     steps:
       - name: Check out files
         uses: actions/checkout@main
@@ -90,6 +91,23 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install libcurl4-gnutls-dev -y
+
+      - name: Install cross build tools (arm64)
+        if: matrix.arch == 'arm64'
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install crossbuild-essential-arm64
+
+      - name: Install dependencies (arm64)
+        if: matrix.arch == 'arm64'
+        run: |
+          sudo dpkg --add-architecture arm64
+          sudo apt-get update
+          echo "deb [arch=arm64,amd64] http://ports.ubuntu.com/ jammy main multiverse universe" | sudo tee /etc/apt/sources.list
+          echo "deb [arch=arm64,amd64] http://ports.ubuntu.com/ jammy-security main multiverse universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=arm64,amd64] http://ports.ubuntu.com/ jammy-backports main multiverse universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=arm64,amd64] http://ports.ubuntu.com/ jammy-updates main multiverse universe" | sudo tee -a /etc/apt/sources.list
+          sudo apt-get -y install libcurl4-gnutls-dev:arm64
 
       - name: Install Premake5
         uses: abel0b/setup-premake@v2.3
