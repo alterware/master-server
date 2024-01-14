@@ -103,10 +103,11 @@ jobs:
         run: |
           sudo dpkg --add-architecture arm64
           sudo apt-get update
-          echo "deb [arch=arm64,amd64] http://ports.ubuntu.com/ jammy main multiverse universe" | sudo tee /etc/apt/sources.list
-          echo "deb [arch=arm64,amd64] http://ports.ubuntu.com/ jammy-security main multiverse universe" | sudo tee -a /etc/apt/sources.list
-          echo "deb [arch=arm64,amd64] http://ports.ubuntu.com/ jammy-backports main multiverse universe" | sudo tee -a /etc/apt/sources.list
-          echo "deb [arch=arm64,amd64] http://ports.ubuntu.com/ jammy-updates main multiverse universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ jammy main restricted universe multiverse" | sudo tee /etc/apt/sources.list
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ jammy-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ jammy-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ jammy-security main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=arm64] http://archive.canonical.com/ubuntu jammy partner" | sudo tee -a /etc/apt/sources.list
           sudo apt-get -y install libcurl4-gnutls-dev:arm64
 
       - name: Install Premake5
