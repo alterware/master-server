@@ -90,10 +90,6 @@ filter { "system:macosx", "platforms:arm64" }
 	linkoptions "-arch arm64"
 filter {}
 
-if _OPTIONS["dev-build"] then
-	defines {"DEV_BUILD"}
-end
-
 if os.getenv("CI") then
 	defines "CI"
 end
@@ -141,7 +137,6 @@ filter { "system:windows", "toolset:msc*" }
 filter {}
 
 dependencies.imports()
-
 
 group "Dependencies"
 dependencies.projects()
