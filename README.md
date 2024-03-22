@@ -4,6 +4,13 @@
 # AlterWare: Master Server
 This is the master server our clients use. It is based on the DP Master Server (ID Tech) protocol
 
+## Usage
+Run using [Docker][docker-link]
+
+```bash
+docker run -p 20810:20810/udp alterware/master-server:latest
+```
+
 ## Build
 - Install [Premake5][premake5-link] and add it to your system PATH
 - Clone this repository using [Git][git-link]
@@ -18,6 +25,7 @@ Requirements for Unix systems:
 - Customization: Modifications to the Premake5.lua script may be required
 - Platform support: Details regarding supported platforms are available in [build.yml][build-link]
 
+[docker-link]:            https://www.docker.com
 [premake5-link]:          https://premake.github.io
 [git-link]:               https://git-scm.com
 [mold-link]:              https://github.com/rui314/mold

@@ -142,8 +142,14 @@ void kill_list::write_to_disk()
 			stream << entry.ip_address_ << " " << entry.reason_ << "\n";
 		}
 
-		utils::io::write_file(kill_file, stream.str(), false);
-		console::info("Wrote %s to disk (%zu entries)", kill_file, entries.size());
+		if (utils::io::write_file(kill_file, stream.str(), false))
+		{
+			console::info("Wrote %s to disk (%zu entries)", kill_file, entries.size());
+		}
+		else
+		{
+			console::error("Failed to write %s!", kill_file);
+		}
 	});
 }
 

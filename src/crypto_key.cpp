@@ -36,7 +36,7 @@ namespace crypto_key
 
 			if (!utils::io::write_file("./private.key", key.serialize()))
 			{
-				throw std::runtime_error("Failed to write server key!");
+				console::error("Failed to write server key!");
 			}
 
 			console::info("Generated cryptographic key: %llX", key.get_hash());
