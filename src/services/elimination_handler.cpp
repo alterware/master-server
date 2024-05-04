@@ -1,9 +1,20 @@
 #include <std_include.hpp>
 #include "elimination_handler.hpp"
 
-constexpr auto T7_PROTOCOL = 7;
+#include <utils/string.hpp>
 
-constexpr size_t MAX_SERVERS_PER_GAME = 10;
+namespace
+{
+	constexpr auto T7_PROTOCOL = 7;
+
+	constexpr size_t MAX_SERVERS_PER_GAME = 10;
+
+	std::array bad_names =
+	{
+		"http",
+		"discord.gg",
+	};
+}
 
 void elimination_handler::run_frame()
 {
@@ -39,6 +50,16 @@ void elimination_handler::run_frame()
 		{
 			console::log("Removing server '%s' because it exceeds MAX_SERVERS_PER_GAME", context.get_address().to_string().data());
 			context.remove();
+		}
+
+		const auto name = utils::string::to_lower(server.name);
+		for (const auto& entry : bad_names)
+		{
+			if (const auto pos = name.find(entry); pos != std::string::npos)
+			{
+				console::log("Removing server '%s' (%s) because it contains a bad name", server.name.data(), context.get_address().to_string().data());
+				context.remove();
+			}
 		}
 	});
 
