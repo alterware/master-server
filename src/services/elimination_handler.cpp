@@ -35,7 +35,7 @@ void elimination_handler::run_frame()
 		}
 
 		++server_count[server.game][context.get_address().to_string(false)];
-		if (server_count[server.game][context.get_address().to_string(false)] >= MAX_SERVERS_PER_GAME)
+		if (server_count[server.game][context.get_address().to_string(false)] > MAX_SERVERS_PER_GAME)
 		{
 			console::log("Removing server '%s' because it exceeds MAX_SERVERS_PER_GAME", context.get_address().to_string().data());
 			context.remove();
