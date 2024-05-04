@@ -3,7 +3,7 @@
 
 constexpr auto T7_PROTOCOL = 7;
 
-constexpr size_t MAX_SERVERS_PER_GAME = 8;
+constexpr size_t MAX_SERVERS_PER_GAME = 10;
 
 void elimination_handler::run_frame()
 {
@@ -29,7 +29,7 @@ void elimination_handler::run_frame()
 		if (server.game == game_type::t7 && server.protocol < T7_PROTOCOL)
 		{
 #ifdef _DEBUG
-			console::log("Removing T7 server '%s' because they are using an outdated protocol (%i)\n", context.get_address().to_string().data(), server.protocol);
+			console::log("Removing T7 server '%s' because they are using an outdated protocol (%i)", context.get_address().to_string().data(), server.protocol);
 #endif
 			context.remove();
 		}
@@ -37,7 +37,7 @@ void elimination_handler::run_frame()
 		++server_count[server.game][context.get_address().to_string(false)];
 		if (server_count[server.game][context.get_address().to_string(false)] >= MAX_SERVERS_PER_GAME)
 		{
-			console::log("Removing server '%s' because it exceeds MAX_SERVERS_PER_GAME\n", context.get_address().to_string().data());
+			console::log("Removing server '%s' because it exceeds MAX_SERVERS_PER_GAME", context.get_address().to_string().data());
 			context.remove();
 		}
 	});
