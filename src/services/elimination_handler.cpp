@@ -59,6 +59,7 @@ void elimination_handler::run_frame()
 			{
 				console::log("Removing server '%s' (%s) because it contains a bad name", server.name.data(), context.get_address().to_string().data());
 				context.remove();
+				break;
 			}
 		}
 	});
