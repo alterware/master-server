@@ -12,7 +12,7 @@ namespace
 	std::array bad_names =
 	{
 		"http",
-		"discord",
+		"discord.gg",
 	};
 }
 
