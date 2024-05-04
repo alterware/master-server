@@ -7,7 +7,7 @@ constexpr size_t MAX_SERVERS_PER_GAME = 10;
 
 void elimination_handler::run_frame()
 {
-	std::unordered_map<game_type, std::unordered_map<network::address, size_t>> server_count;
+	std::unordered_map<game_type, std::unordered_map<std::string, size_t>> server_count;
 
 	auto now = std::chrono::high_resolution_clock::now();
 	this->get_server().get_server_list().iterate([&](server_list::iteration_context& context)
@@ -29,17 +29,15 @@ void elimination_handler::run_frame()
 		if (server.game == game_type::t7 && server.protocol < T7_PROTOCOL)
 		{
 #ifdef _DEBUG
-			console::log("Removing T7 server '%s' because they are using an outdated protocol (%i)\n",
-			             context.get_address().to_string().data(), server.protocol);
+			console::log("Removing T7 server '%s' because they are using an outdated protocol (%i)", context.get_address().to_string().data(), server.protocol);
 #endif
 			context.remove();
 		}
 
-		++server_count[server.game][context.get_address()];
-		if (server_count[server.game][context.get_address()] >= MAX_SERVERS_PER_GAME)
+		++server_count[server.game][context.get_address().to_string(false)];
+		if (server_count[server.game][context.get_address().to_string(false)] >= MAX_SERVERS_PER_GAME)
 		{
-			console::log("Removing server '%s' because it exceeds MAX_SERVERS_PER_GAME\n",
-			             context.get_address().to_string().data());
+			console::log("Removing server '%s' because it exceeds MAX_SERVERS_PER_GAME", context.get_address().to_string().data());
 			context.remove();
 		}
 	});
