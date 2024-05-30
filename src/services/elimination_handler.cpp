@@ -30,6 +30,7 @@ void elimination_handler::run_frame()
 			(server.state == game_server::state::can_ping && diff > 15min))
 		{
 			context.remove();
+			return;
 		}
 
 		if (server.game == game_type::unknown)
@@ -43,6 +44,7 @@ void elimination_handler::run_frame()
 			console::log("Removing T7 server '%s' because they are using an outdated protocol (%i)", context.get_address().to_string().data(), server.protocol);
 #endif
 			context.remove();
+			return;
 		}
 
 		++server_count[server.game][context.get_address().to_string(false)];
@@ -50,6 +52,7 @@ void elimination_handler::run_frame()
 		{
 			console::log("Removing server '%s' because it exceeds MAX_SERVERS_PER_GAME", context.get_address().to_string().data());
 			context.remove();
+			return;
 		}
 
 		const auto name = utils::string::to_lower(server.name);
@@ -59,7 +62,7 @@ void elimination_handler::run_frame()
 			{
 				console::log("Removing server '%s' (%s) because it contains a bad name", server.name.data(), context.get_address().to_string().data());
 				context.remove();
-				break;
+				return;
 			}
 		}
 	});
