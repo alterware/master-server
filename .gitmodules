@@ -16,7 +16,3 @@
 	path = deps/libtomcrypt
 	url = https://github.com/libtom/libtomcrypt.git
 	branch = develop
-[submodule "deps/curl"]
-	path = deps/curl
-	url = https://github.com/curl/curl.git
-	branch = curl-8_7_1
