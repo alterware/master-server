@@ -85,6 +85,7 @@ jobs:
         arch:
           - x86
           - x64
+          - arm64
     steps:
       - name: Check out files
         uses: actions/checkout@main
@@ -93,6 +94,12 @@ jobs:
           fetch-depth: 0
           # NOTE - If LFS ever starts getting used during builds, switch this to true!
           lfs: false
+
+      - name: Install dependencies (arm64)
+        if: matrix.arch == 'arm64'
+        run: |
+          sudo apt-get update
+          sudo apt-get install crossbuild-essential-arm64 -y
 
       - name: Install dependencies (x86)
         if: matrix.arch == 'x86'
@@ -114,6 +121,16 @@ jobs:
 
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
+
+      - name: Set up CC environment variable
+        if: matrix.arch == 'arm64'
+        run: |
+          echo "CC=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
+
+      - name: Set up CXX environment variable
+        if: matrix.arch == 'arm64'
+        run: |
+          echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
 
       - name: Build ${{matrix.arch}} ${{matrix.configuration}} binaries
         run: |
