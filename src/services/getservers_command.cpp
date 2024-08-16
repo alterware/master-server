@@ -71,6 +71,11 @@ void getservers_command::handle_command(const network::address& target, const st
 		response.push_back('\\');
 		response.append(reinterpret_cast<const char*>(&server.address), DPM_PROTOCOL_ADDRESS_LENGTH);
 		response.append(reinterpret_cast<const char*>(&server.port), DPM_PROTOCOL_PORT_LENGTH);
+		// h2m adds a byte at the end for "favourite server"
+		if (game_type == game_type::h2m){
+			response.push_back('\0');
+		}
+
 		prepared_servers.pop();
 
 		if (response.size() >= MTU || prepared_servers.empty())
