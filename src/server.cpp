@@ -72,19 +72,19 @@ void server::handle_command(const network::address& target, const std::string_vi
 	const auto handler = this->command_services_.find(std::string{command});
 	if (handler == this->command_services_.end())
 	{
-		console::warn("Unhandled command (%s): %.*s", target.to_string().data(), command.size(), command.data());
+		console::warn("Unhandled command (%s): %.*s", target.to_string().c_str(), command.size(), command.data());
 		return;
 	}
 
 	std::string ban_reason;
 	if (this->get_service<kill_list>()->contains(target, ban_reason))
 	{
-		console::log("Refused command from server %s - target is on the kill list (%s)", target.to_string().data(), ban_reason.data());
+		console::log("Refused command from server %s - target is on the kill list (%s)", target.to_string().c_str(), ban_reason.c_str());
 		return;
 	}
 
 #ifdef DEBUG
-	console::log("Handling command (%s): %.*s - %.*s", target.to_string().data(), command.size(), command.data(), data.size(), data.data());
+	console::log("Handling command (%s): %.*s - %.*s", target.to_string().c_str(), command.size(), command.data(), data.size(), data.data());
 #endif
 
 	try
@@ -93,11 +93,10 @@ void server::handle_command(const network::address& target, const std::string_vi
 	}
 	catch (const service::execution_exception& e)
 	{
-		console::warn("Exception in command %.*s (%s): %s", command.size(), command.data(), target.to_string().data(),
-		              e.what());
+		console::warn("Exception in command %.*s (%s): %s", command.size(), command.data(), target.to_string().c_str(), e.what());
 	}
 	catch (const std::exception& e)
 	{
-		console::error("Fatal exception in command %.*s (%s): %s", command.size(), command.data(), target.to_string().data(), e.what());
+		console::error("Fatal exception in command %.*s (%s): %s", command.size(), command.data(), target.to_string().c_str(), e.what());
 	}
 }

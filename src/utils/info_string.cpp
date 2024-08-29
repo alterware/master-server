@@ -56,10 +56,10 @@ namespace utils
 		std::string info_string;
 		for (const auto& [key, val] : this->key_value_pairs_)
 		{
-			info_string.append("\\");
+			info_string.push_back('\\');
 
 			info_string.append(key);
-			info_string.append("\\");
+			info_string.push_back('\\');
 			info_string.append(val);
 		}
 

@@ -90,7 +90,7 @@ bool server_base::receive_data()
 
 	if (!is_command(data))
 	{
-		console::warn("Received invalid data from: %s", address.to_string().data());
+		console::warn("Received invalid data from: %s", address.to_string().c_str());
 		return false;
 	}
 

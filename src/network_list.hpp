@@ -133,7 +133,7 @@ protected:
 
 			if (!is_insertion_allowed(list, address))
 			{
-				console::log("Insertion rejected for target:\t%s", address.to_string().data());
+				console::log("Insertion rejected for target:\t%s", address.to_string().c_str());
 				return;
 			}
 

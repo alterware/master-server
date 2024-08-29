@@ -2,6 +2,7 @@
 #include "statistics_handler.hpp"
 #include "../console.hpp"
 
+#include <utils/env.hpp>
 #include <utils/io.hpp>
 #include <utils/string.hpp>
 
@@ -37,7 +38,14 @@ namespace
 		root.Accept(root_writer);
 
 		std::string root_data(root_buffer.GetString(), root_buffer.GetLength());
-		utils::io::write_file("/var/www/server.alterware.dev/html/stats.json", root_data);
+		const auto location = utils::env::get_value("AW_STATS_LOCATION");
+		if (location.empty())
+		{
+			console::error("The environment variable 'AW_STATS_LOCATION' is not set. Please set 'AW_STATS_LOCATION' to specify the save location for 'stats.json'\n");
+			return;
+		}
+
+		utils::io::write_file(location, root_data);
 	}
 }
 
@@ -73,12 +81,12 @@ void statistics_handler::run_frame()
 
 	for (const auto& game_servers : servers)
 	{
-		console::log("%s (%d):", resolve_game_type_name(game_servers.first).data(),
+		console::log("%s (%d):", resolve_game_type_name(game_servers.first).c_str(),
 		             static_cast<uint32_t>(game_servers.second.size()));
 
 		for (const auto& server : game_servers.second)
 		{
-			console::log("\t%s\t%s", server.second.to_string().data(), server.first.data());
+			console::log("\t%s\t%s", server.second.to_string().c_str(), server.first.c_str());
 		}
 	}
 
