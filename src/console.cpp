@@ -216,9 +216,9 @@ namespace console
 		lock _{};
 
 #ifdef _WIN32
-		SetConsoleTitleA(title.data());
+		SetConsoleTitleA(title.c_str());
 #else
-        printf("\033]0;%s\007", title.data());
+        printf("\033]0;%s\007", title.c_str());
         fflush(stdout);
 #endif
 	}

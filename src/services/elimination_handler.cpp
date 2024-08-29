@@ -41,7 +41,7 @@ void elimination_handler::run_frame()
 		if (server.game == game_type::t7 && server.protocol < T7_PROTOCOL)
 		{
 #ifdef _DEBUG
-			console::log("Removing T7 server '%s' because they are using an outdated protocol (%i)", context.get_address().to_string().data(), server.protocol);
+			console::log("Removing T7 server '%s' because they are using an outdated protocol (%i)", context.get_address().to_string().c_str(), server.protocol);
 #endif
 			context.remove();
 			return;
@@ -50,7 +50,7 @@ void elimination_handler::run_frame()
 		++server_count[server.game][context.get_address().to_string(false)];
 		if (server_count[server.game][context.get_address().to_string(false)] > MAX_SERVERS_PER_GAME)
 		{
-			console::log("Removing server '%s' because it exceeds MAX_SERVERS_PER_GAME", context.get_address().to_string().data());
+			console::log("Removing server '%s' because it exceeds MAX_SERVERS_PER_GAME", context.get_address().to_string().c_str());
 			context.remove();
 			return;
 		}
@@ -60,7 +60,7 @@ void elimination_handler::run_frame()
 		{
 			if (const auto pos = name.find(entry); pos != std::string::npos)
 			{
-				console::log("Removing server '%s' (%s) because it contains a bad name", server.name.data(), context.get_address().to_string().data());
+				console::log("Removing server '%s' (%s) because it contains a bad name", server.name.c_str(), context.get_address().to_string().c_str());
 				context.remove();
 				return;
 			}

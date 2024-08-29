@@ -36,9 +36,9 @@ void getservers_command::handle_command(const network::address& target, const st
 
 	const auto& game = params[0];
 
-	const auto* p = params[1].data();
+	const auto* p = params[1].c_str();
 	char* end;
-	const auto protocol = strtol(params[1].data(), &end, 10);
+	const auto protocol = strtol(params[1].c_str(), &end, 10);
 	if (p == end)
 	{
 		throw execution_exception("Invalid protocol");
@@ -92,5 +92,5 @@ void getservers_command::handle_command(const network::address& target, const st
 		}
 	}
 
-	console::log("Sent %zu servers in %zu parts for game %s:\t%s", prepared_servers.size(), packet_count, game.data(), target.to_string().data());
+	console::log("Sent %zu servers in %zu parts for game %s:\t%s", prepared_servers.size(), packet_count, game.c_str(), target.to_string().c_str());
 }

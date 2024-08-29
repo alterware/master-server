@@ -71,7 +71,7 @@ namespace utils
 	char* memory::duplicate_string(const std::string& string)
 	{
 		const auto new_string = allocate_array<char>(string.size() + 1);
-		std::memcpy(new_string, string.data(), string.size());
+		std::memcpy(new_string, string.c_str(), string.size());
 		return new_string;
 	}
 

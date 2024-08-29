@@ -154,5 +154,5 @@ void getbots_command::handle_command(const network::address& target, const std::
 	}
 
 	this->get_server().send(target, "getbotsResponse", stream.str());
-	console::log("Sent bot names: %s", target.to_string().data());
+	console::log("Sent bot names to: %s", target.to_string().c_str());
 }

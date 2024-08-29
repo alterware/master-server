@@ -119,7 +119,7 @@ namespace utils::compression
 			bool add_file(zipFile& zip_file, const std::string& filename, const std::string& data)
 			{
 				const auto zip_64 = data.size() > 0xffffffff ? 1 : 0;
-				if (ZIP_OK != zipOpenNewFileInZip64(zip_file, filename.data(), nullptr, nullptr, 0, nullptr, 0, nullptr,
+				if (ZIP_OK != zipOpenNewFileInZip64(zip_file, filename.c_str(), nullptr, nullptr, 0, nullptr, 0, nullptr,
 				                                    Z_DEFLATED, Z_BEST_COMPRESSION, zip_64))
 				{
 					return false;
@@ -145,7 +145,7 @@ namespace utils::compression
 			io::write_file(filename, {});
 			io::remove_file(filename);
 
-			auto* zip_file = zipOpen64(filename.data(), 0);
+			auto* zip_file = zipOpen64(filename.c_str(), 0);
 			if (!zip_file)
 			{
 				return false;
@@ -153,7 +153,7 @@ namespace utils::compression
 
 			const auto _ = gsl::finally([&zip_file, &comment]()
 			{
-				zipClose(zip_file, comment.empty() ? nullptr : comment.data());
+				zipClose(zip_file, comment.empty() ? nullptr : comment.c_str());
 			});
 
 			for (const auto& file : this->files_)

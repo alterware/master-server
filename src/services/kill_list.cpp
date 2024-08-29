@@ -33,7 +33,7 @@ void kill_list::add_to_kill_list(const kill_list_entry& add)
 		const auto existing_entry = entries.find(add.ip_address_);
 		if (existing_entry == entries.end() || existing_entry->second.reason_ != add.reason_)
 		{
-			console::info("Added %s to kill list (reason: %s)", add.ip_address_.data(), add.reason_.data());
+			console::info("Added %s to kill list (reason: %s)", add.ip_address_.c_str(), add.reason_.c_str());
 			entries[add.ip_address_] = add;
 			return true;
 		}
@@ -43,7 +43,7 @@ void kill_list::add_to_kill_list(const kill_list_entry& add)
 
 	if (!any_change)
 	{
-		console::info("%s already in kill list, doing nothing", add.ip_address_.data());
+		console::info("%s already in kill list, doing nothing", add.ip_address_.c_str());
 		return;
 	}
 
@@ -61,7 +61,7 @@ void kill_list::remove_from_kill_list(const std::string& remove)
 	{
 		if (entries.erase(remove))
 		{
-			console::info("Removed %s from kill list", remove.data());
+			console::info("Removed %s from kill list", remove.c_str());
 			return true;
 		}
 
@@ -70,7 +70,7 @@ void kill_list::remove_from_kill_list(const std::string& remove)
 
 	if (!any_change)
 	{
-		console::info("%s not in kill list, doing nothing", remove.data());
+		console::info("%s not in kill list, doing nothing", remove.c_str());
 		return;
 	}
 

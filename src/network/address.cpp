@@ -121,7 +121,7 @@ namespace network
 		if (pos != std::string::npos)
 		{
 			auto port = addr.substr(pos + 1);
-			this->set_port(uint16_t(atoi(port.data())));
+			this->set_port(static_cast<uint16_t>(atoi(port.c_str())));
 
 			addr = addr.substr(0, pos);
 		}
@@ -132,7 +132,7 @@ namespace network
 	void address::resolve(const std::string& hostname)
 	{
 		addrinfo* result = nullptr;
-		if (!getaddrinfo(hostname.data(), nullptr, nullptr, &result))
+		if (!getaddrinfo(hostname.c_str(), nullptr, nullptr, &result))
 		{
 			for (auto* i = result; i; i = i->ai_next)
 			{

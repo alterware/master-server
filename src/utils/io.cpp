@@ -8,12 +8,12 @@ namespace utils::io
 {
 	bool remove_file(const std::string& file)
 	{
-		return remove(file.data()) == 0;
+		return remove(file.c_str()) == 0;
 	}
 
 	bool move_file(const std::string& src, const std::string& target)
 	{
-		return rename(src.data(), target.data()) == 0;
+		return rename(src.c_str(), target.c_str()) == 0;
 	}
 
 	bool file_exists(const std::string& file)

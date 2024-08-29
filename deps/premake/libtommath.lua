@@ -30,6 +30,7 @@ end
 function libtommath.project()
 	project "libtommath"
 		language "C"
+		cdialect "C89"
 
 		libtommath.includes()
 
@@ -44,10 +45,6 @@ function libtommath.project()
 		removedefines {
 			"_DLL",
 			"_USRDLL"
-		}
-
-		linkoptions {
-			"-IGNORE:4221"
 		}
 
 		warnings "Off"
