@@ -9,4 +9,6 @@ USER alterware-master
 
 EXPOSE 20810/udp
 
+ENV AW_STATS_LOCATION=""
+
 ENTRYPOINT ["/usr/local/bin/alterware-master"]
