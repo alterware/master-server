@@ -7,8 +7,8 @@ This is the master server our clients use. It is based on the DP Master Server (
 ## Usage
 Run using [Docker][docker-link]
 
-```bash
-docker run -p 20810:20810/udp alterware/master-server:latest
+```
+docker run -p 20810:20810/udp -e AW_STATS_LOCATION=<UTF-8 C-string> alterware/master-server:latest
 ```
 
 ## Build
