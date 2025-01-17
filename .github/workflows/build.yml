@@ -76,6 +76,7 @@ jobs:
   build-linux:
     name: Build Linux
     runs-on: ubuntu-latest
+    container: ubuntu:noble
     strategy:
       fail-fast: false
       matrix:
@@ -83,9 +84,17 @@ jobs:
           - debug
           - release
         arch:
-          - x86
           - x64
     steps:
+      - name: Install g++ and multilib
+        run: |
+          apt-get update
+          apt-get install -y wget tar git make gcc-13 g++-13 gcc-13-multilib g++-13-multilib
+          update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13
+          update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 13
+          update-alternatives --set gcc /usr/bin/gcc-13
+          update-alternatives --set g++ /usr/bin/g++-13
+
       - name: Check out files
         uses: actions/checkout@main
         with:
@@ -93,19 +102,6 @@ jobs:
           fetch-depth: 0
           # NOTE - If LFS ever starts getting used during builds, switch this to true!
           lfs: false
-
-      - name: Install dependencies (arm64)
-        if: matrix.arch == 'arm64'
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install crossbuild-essential-arm64
-
-      - name: Install dependencies (x86)
-        if: matrix.arch == 'x86'
-        run: |
-          sudo dpkg --add-architecture i386
-          sudo apt-get update
-          sudo apt-get -y install gcc-multilib g++-multilib
 
       - name: Install Premake5
         uses: diamante0018/setup-premake@master
@@ -116,25 +112,16 @@ jobs:
         uses: rui314/setup-mold@staging
 
       - name: Generate project files
+        working-directory: ${{ github.workspace }}
         run: premake5 gmake2
 
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
 
-      - name: Set up CC environment variable
-        if: matrix.arch == 'arm64'
-        run: |
-          echo "CC=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
-
-      - name: Set up CXX environment variable
-        if: matrix.arch == 'arm64'
-        run: |
-          echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
-
       - name: Build ${{matrix.arch}} ${{matrix.configuration}} binaries
+        working-directory: ${{ github.workspace }}
         run: |
-          pushd build
-          make config=${{matrix.configuration}}_${{matrix.arch}} -j$(nproc)
+          make -C build config=${{matrix.configuration}}_${{matrix.arch}} -j$(nproc)
 
       - name: Upload ${{matrix.arch}} ${{matrix.configuration}} binaries
         uses: actions/upload-artifact@main

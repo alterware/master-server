@@ -47,6 +47,8 @@ function libtomcrypt.project()
 			"LTC_SOURCE",
 			"_LIB",
 			"USE_LTM",
+			"LTC_NO_TEST",
+			"LTC_NO_PROTOTYPES"
 		}
 
 		removedefines {
