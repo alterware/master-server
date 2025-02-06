@@ -39,7 +39,7 @@ int main(const int argc, const char** argv)
 	}
 	catch (std::exception& e)
 	{
-		console::error("Fatal error: %s\n", e.what());
+		console::error("Fatal error: %s", e.what());
 		return -1;
 	}
 

@@ -41,9 +41,11 @@ namespace
 		const auto location = utils::env::get_value("AW_STATS_LOCATION");
 		if (location.empty())
 		{
-			console::error("The environment variable 'AW_STATS_LOCATION' is not set. Please set 'AW_STATS_LOCATION' to specify the save location for 'stats.json'\n");
+			console::error("The environment variable 'AW_STATS_LOCATION' is not set. Please set 'AW_STATS_LOCATION' to specify the save location for 'stats.json'");
 			return;
 		}
+
+		console::info("Writing stats to %s", location.c_str());
 
 		utils::io::write_file(location, root_data);
 	}
