@@ -85,6 +85,11 @@ if os.istarget("linux") then
 	filter {}
 end
 
+filter { "system:macosx", "platforms:x64" }
+	buildoptions "-arch x86_64"
+	linkoptions "-arch x86_64"
+filter {}
+
 filter { "system:macosx", "platforms:arm64" }
 	buildoptions "-arch arm64"
 	linkoptions "-arch arm64"

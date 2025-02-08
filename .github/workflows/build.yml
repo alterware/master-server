@@ -139,6 +139,7 @@ jobs:
           - debug
           - release
         arch:
+          - x64
           - arm64
     steps:
       - name: Check out files

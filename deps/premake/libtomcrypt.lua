@@ -56,15 +56,13 @@ function libtomcrypt.project()
 			"_USRDLL",
 		}
 
-		if os.istarget("darwin") then
-			filter "platforms:x64"
-				buildoptions "-march=native"
-			filter {}
+		filter { "system:macosx", "platforms:arm64" }
+			buildoptions "-mcpu=apple-m1"
+		filter {}
 
-			filter "platforms:arm64"
-				buildoptions "-mcpu=apple-m1"
-			filter {}
-		end
+		filter { "system:macosx", "platforms:x64" }
+			buildoptions "-mcpu=x86-64"
+		filter {}
 
 		warnings "Off"
 		kind "StaticLib"
