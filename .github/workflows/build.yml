@@ -83,7 +83,8 @@ jobs:
 
   build-linux:
     name: Build Linux
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container: ubuntu:noble
     strategy:
       fail-fast: false
       matrix:
@@ -94,6 +95,15 @@ jobs:
           - x86
           - x64
     steps:
+      - name: Install g++ and multilib
+        run: |
+          apt-get update
+          apt-get install -y wget tar git make gcc-13 g++-13 gcc-13-multilib g++-13-multilib
+          update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13
+          update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 13
+          update-alternatives --set gcc /usr/bin/gcc-13
+          update-alternatives --set g++ /usr/bin/g++-13
+
       - name: Check out files
         uses: actions/checkout@main
         with:
@@ -105,9 +115,9 @@ jobs:
       - name: Install dependencies (x86)
         if: matrix.arch == 'x86'
         run: |
-          sudo dpkg --add-architecture i386
-          sudo apt-get update
-          sudo apt-get install gcc-multilib g++-multilib -y
+          dpkg --add-architecture i386
+          apt-get update
+          apt-get install -y gcc-13-multilib g++-13-multilib
 
       - name: Install Premake5
         uses: diamante0018/setup-premake@master
@@ -119,7 +129,7 @@ jobs:
 
       - name: Generate project files
         working-directory: ${{ github.workspace }}
-        run: premake5 gmake2
+        run: premake5 gmake
 
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
@@ -127,8 +137,7 @@ jobs:
       - name: Build ${{matrix.arch}} ${{matrix.configuration}} binaries
         working-directory: ${{ github.workspace }}
         run: |
-          pushd build
-          make config=${{matrix.configuration}}_${{matrix.arch}} -j$(nproc)
+          make -C build config=${{matrix.configuration}}_${{matrix.arch}} -j$(nproc)
 
       - name: Upload ${{matrix.arch}} ${{matrix.configuration}} binaries
         uses: actions/upload-artifact@main
@@ -164,7 +173,7 @@ jobs:
           version: ${{ env.PREMAKE_VERSION }}
 
       - name: Generate project files
-        run: premake5 gmake2
+        run: premake5 gmake
 
       - name: Set up problem matching
         uses: ammaraskar/gcc-problem-matcher@master
