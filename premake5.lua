@@ -104,7 +104,7 @@ flags {"NoIncrementalLink", "NoMinimalRebuild", "MultiProcessorCompile", "No64Bi
 filter "configurations:release"
 	optimize "Size"
 	defines "NDEBUG"
-	flags "FatalCompileWarnings"
+	fatalwarnings {"All"}
 filter {}
 
 filter "configurations:debug"

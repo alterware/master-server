@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PREMAKE_VERSION: "5.0.0-beta2"
+  PREMAKE_VERSION: "5.0.0-beta6"
 
 jobs:
   build-win:
@@ -28,6 +28,9 @@ jobs:
         configuration:
           - debug
           - release
+        compiler:
+          - msvc
+          - clang
         arch:
           - x86
           - x64
@@ -56,19 +59,24 @@ jobs:
         with:
           version: ${{ env.PREMAKE_VERSION }}
 
-      - name: Generate project files
+      - name: Generate project files (clang)
+        if: matrix.compiler == 'clang'
+        run: premake5 --cc=${{matrix.compiler}} vs2022
+
+      - name: Generate project files (msvc)
+        if: matrix.compiler == 'msvc'
         run: premake5 vs2022
 
       - name: Set up problem matching
         uses: ammaraskar/msvc-problem-matcher@master
 
-      - name: Build ${{matrix.arch}} ${{matrix.configuration}} binaries
-        run: msbuild /m /v:minimal /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} build/alterware-master.sln
+      - name: Build ${{matrix.arch}} ${{matrix.configuration}}  ${{matrix.compiler}} binaries
+        run: msbuild /m /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} build/alterware-master.sln
 
-      - name: Upload ${{matrix.arch}} ${{matrix.configuration}} binaries
+      - name: Upload ${{matrix.arch}} ${{matrix.configuration}} ${{matrix.compiler}} binaries
         uses: actions/upload-artifact@main
         with:
-          name: windows-${{matrix.arch}}-${{matrix.configuration}}
+          name: windows-${{matrix.arch}}-${{matrix.configuration}}-${{matrix.compiler}}
           path: |
             build/bin/${{matrix.arch}}/${{matrix.configuration}}/alterware-master.exe
             build/bin/${{matrix.arch}}/${{matrix.configuration}}/alterware-master.pdb
@@ -231,16 +239,16 @@ jobs:
         shell: bash
 
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3.8.0
+        uses: docker/setup-buildx-action@v3.10.0
 
       - name: Login to DockerHub
-        uses: docker/login-action@v3.3.0
+        uses: docker/login-action@v3.4.0
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - id: meta
-        uses: docker/metadata-action@v5.6.1
+        uses: docker/metadata-action@v5.7.0
         with:
           images: |
             alterware/master-server
@@ -250,7 +258,7 @@ jobs:
 
       - name: Build and Push Docker Image
         id: build-and-push
-        uses: docker/build-push-action@v6.13.0
+        uses: docker/build-push-action@v6.15.0
         with:
           context: .
           platforms: linux/amd64
