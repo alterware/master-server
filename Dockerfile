@@ -1,7 +1,5 @@
-FROM ubuntu:latest
- 
-RUN apt-get update
-RUN apt-get install -y libc++-dev
+FROM ubuntu:noble
+ARG TARGETARCH
 
 WORKDIR /master-server
 
@@ -11,7 +9,7 @@ RUN mkdir -p /master-server && \
     chown alterware-master:alterware-master /master-server && \
     chmod 775 /master-server
 
-COPY --chown=alterware-master:alterware-master --chmod=755 ./linux-x64-release/alterware-master /master-server
+COPY --chown=alterware-master:alterware-master --chmod=755 ./linux-${TARGETARCH}-release/alterware-master /master-server
 
 USER alterware-master
 

@@ -41,9 +41,11 @@ configurations {"debug", "release"}
 language "C++"
 cppdialect "C++20"
 
-if os.istarget("darwin") then
-	platforms {"x64", "arm64"}
-else
+if os.istarget("linux") then
+	platforms {"x86", "amd64", "arm64"}
+elseif os.istarget("macosx") then
+	platforms {"amd64", "arm64"}
+else 
 	platforms {"x86", "x64", "arm64"}
 end
 
@@ -52,6 +54,10 @@ architecture "x86"
 filter {}
 
 filter "platforms:x64"
+architecture "x86_64"
+filter {}
+
+filter "platforms:amd64"
 architecture "x86_64"
 filter {}
 
@@ -77,15 +83,12 @@ if os.istarget("linux") then
 	filter {}
 
 	filter { "toolset:clang*" }
-		buildoptions "-stdlib=libc++"
-		linkoptions "-stdlib=libc++"
-
 		-- always try to use lld. LD or Gold will not work
 		linkoptions "-fuse-ld=lld"
 	filter {}
 end
 
-filter { "system:macosx", "platforms:x64" }
+filter { "system:macosx", "platforms:amd64" }
 	buildoptions "-arch x86_64"
 	linkoptions "-arch x86_64"
 filter {}

@@ -60,7 +60,7 @@ function libtomcrypt.project()
 			buildoptions "-mcpu=apple-m1"
 		filter {}
 
-		filter { "system:macosx", "platforms:x64" }
+		filter { "system:macosx", "platforms:amd64" }
 			buildoptions "-mcpu=x86-64"
 		filter {}
 
