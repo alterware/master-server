@@ -68,7 +68,7 @@ jobs:
       - name: Set up problem matching
         uses: ammaraskar/msvc-problem-matcher@master
 
-      - name: Build ${{matrix.arch}} ${{matrix.configuration}}  ${{matrix.compiler}} binaries
+      - name: Build ${{matrix.arch}} ${{matrix.configuration}} ${{matrix.compiler}} binaries
         run: msbuild /m /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} build/alterware-master.sln
 
       - name: Upload ${{matrix.arch}} ${{matrix.configuration}} ${{matrix.compiler}} binaries
