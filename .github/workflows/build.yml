@@ -26,7 +26,6 @@ jobs:
       fail-fast: false
       matrix:
         configuration:
-          - debug
           - release
         compiler:
           - msvc
@@ -88,7 +87,6 @@ jobs:
       fail-fast: false
       matrix:
         configuration:
-          - debug
           - release
         arch:
           - x86
@@ -178,7 +176,6 @@ jobs:
       fail-fast: false
       matrix:
         configuration:
-          - debug
           - release
         arch:
           - arm64
@@ -193,7 +190,7 @@ jobs:
           fetch-depth: 0
           lfs: false
 
-      - name: Compress the build directory
+      - name: Create the build directory
         run: mkdir -p build
 
       - name: Download project files
@@ -202,20 +199,14 @@ jobs:
           name: linux-project-files
           path: build/
 
-      - name: Install LLVM
-        run: |
-          wget https://apt.llvm.org/llvm.sh
-          chmod +x llvm.sh
-          sudo ./llvm.sh 18
-
       - name: Build ${{matrix.arch}} ${{matrix.configuration}} binaries
         working-directory: ${{ github.workspace }}
         run: |
           pushd build
           make config=${{matrix.configuration}}_${{matrix.arch}} -j$(nproc)
         env:
-         CC: clang-18
-         CXX: clang++-18
+         CC: clang
+         CXX: clang++
 
       - name: Upload ${{matrix.arch}} ${{matrix.configuration}} binaries
         uses: actions/upload-artifact@main
@@ -231,7 +222,6 @@ jobs:
       fail-fast: false
       matrix:
         configuration:
-          - debug
           - release
         arch:
           - amd64
