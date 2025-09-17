@@ -11,6 +11,8 @@ Run using [Docker][docker-link]
 docker run -p 20810:20810/udp -e AW_STATS_LOCATION=<UTF-8 C-string> alterware/master-server:latest
 ```
 
+When setting the `AW_STATS_LOCATION` environment variable, you may want the container to write stats to a file or directory on the host system. In this case, you must **mount a directory from the host** into the container and ensure it has write permissions.
+
 or run as a systemd service
 
 ```
@@ -38,7 +40,7 @@ WantedBy=multi-user.target
 - Install [Premake5][premake5-link] and add it to your system PATH
 - Clone this repository using [Git][git-link]
 - Update the submodules using ``git submodule update --init --recursive``
-- Run Premake with either of these two options ``premake5 vs2022`` (Windows) or ``premake5 gmake2`` (Linux/macOS)
+- Run Premake with either of these two options ``premake5 vs2022`` (Windows) or ``premake5 gmake`` (Linux/macOS)
 
 **IMPORTANT**
 Requirements for Unix systems:
