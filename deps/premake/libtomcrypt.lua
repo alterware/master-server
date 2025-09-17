@@ -60,10 +60,6 @@ function libtomcrypt.project()
 			buildoptions "-mcpu=apple-m1"
 		filter {}
 
-		filter { "system:macosx", "platforms:amd64" }
-			buildoptions "-mcpu=x86-64"
-		filter {}
-
 		warnings "Off"
 		kind "StaticLib"
 end
