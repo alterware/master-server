@@ -30,11 +30,15 @@ namespace utils::string
 			while (true)
 			{
 				const auto res = vsnprintf(entry->buffer_, entry->size_, format, ap);
+				if (res < 0) return nullptr; // Error
 
-				if (res > 0) break; // Success
-				if (res == 0) return nullptr; // Error
+				if (static_cast<std::size_t>(res) >= entry->size_)
+				{
+					entry->double_size();
+					continue;
+				}
 
-				entry->double_size();
+				break; // Success
 			}
 
 			return entry->buffer_;
