@@ -1,5 +1,6 @@
 #pragma once
 #include "memory.hpp"
+#include <cstdarg>
 #include <cstdint>
 
 template <class Type, std::size_t n>
@@ -29,7 +30,12 @@ namespace utils::string
 
 			while (true)
 			{
-				const auto res = vsnprintf(entry->buffer_, entry->size_, format, ap);
+				va_list ap_copy;
+				va_copy(ap_copy, ap);
+
+				const auto res = vsnprintf(entry->buffer_, entry->size_, format, ap_copy);
+				va_end(ap_copy);
+
 				if (res < 0) return nullptr; // Error
 
 				if (static_cast<std::size_t>(res) >= entry->size_)
