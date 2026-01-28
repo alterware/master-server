@@ -111,7 +111,7 @@ jobs:
       - name: Configure gcc
         uses: ./.github/actions/configure-gcc
         with:
-          gcc_version: 14
+          gcc_version: 13
           enable_x86: ${{ case(matrix.build_arch == 'x86', 'true', 'false') }}
 
       - name: Install Premake5
