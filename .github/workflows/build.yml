@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PREMAKE_VERSION: "5.0.0-beta7"
+  PREMAKE_VERSION: "5.0.0-beta8"
 
 jobs:
   build-windows:
@@ -92,14 +92,14 @@ jobs:
           - x86
           - amd64
     steps:
-      - name: Install g++ and multilib
+      - name: Enable i386 architecture
+        if: ${{ matrix.build_arch == 'x86' }}
+        run: dpkg --add-architecture i386
+
+      - name: Install base packages
         run: |
           apt-get update
-          apt-get install -y wget tar git make gcc-13 g++-13 gcc-13-multilib g++-13-multilib
-          update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13
-          update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 13
-          update-alternatives --set gcc /usr/bin/gcc-13
-          update-alternatives --set g++ /usr/bin/g++-13
+          apt-get install -y wget tar git make curl
 
       - name: Check out files
         uses: actions/checkout@main
@@ -108,12 +108,11 @@ jobs:
           fetch-depth: 0
           lfs: false
 
-      - name: Install dependencies (x86)
-        if: matrix.arch == 'x86'
-        run: |
-          dpkg --add-architecture i386
-          apt-get update
-          apt-get install -y gcc-13-multilib g++-13-multilib
+      - name: Configure gcc
+        uses: ./.github/actions/configure-gcc
+        with:
+          gcc_version: 14
+          enable_x86: ${{ case(matrix.build_arch == 'x86', 'true', 'false') }}
 
       - name: Install Premake5
         uses: diamante0018/setup-premake@master
