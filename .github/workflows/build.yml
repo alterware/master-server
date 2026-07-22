@@ -59,7 +59,7 @@ jobs:
 
       - name: Generate project files (clang)
         if: matrix.compiler == 'clang'
-        run: premake5 --cc=${{matrix.compiler}} vs2022
+        run: premake5 --cc=${{matrix.compiler}} vs2025
 
       - name: Generate project files (msvc)
         if: matrix.compiler == 'msvc'
