@@ -33,7 +33,6 @@ jobs:
         arch:
           - x86
           - x64
-          - arm64
         include:
           - arch: x86
             platform: Win32
