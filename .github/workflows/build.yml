@@ -39,8 +39,6 @@ jobs:
             platform: Win32
           - arch: x64
             platform: x64
-          - arch: arm64
-            platform: arm64
     steps:
       - name: Check out files
         uses: actions/checkout@main
@@ -59,7 +57,7 @@ jobs:
 
       - name: Generate project files (clang)
         if: matrix.compiler == 'clang'
-        run: premake5 --cc=${{matrix.compiler}} vs2025
+        run: premake5 --cc=${{matrix.compiler}} vs2022
 
       - name: Generate project files (msvc)
         if: matrix.compiler == 'msvc'
